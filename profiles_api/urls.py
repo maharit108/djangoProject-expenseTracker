@@ -1,7 +1,12 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
 from profiles_api import views
 
+router = DefaultRouter()
+"""queryset provided in views son base_name not required"""
+router.register('profile', views.UserProfileViewSet)
+
 urlpatterns = [
-path('hello/', views.HelloApiView.as_view()),
+    path('', include(router.urls)),
 ]
