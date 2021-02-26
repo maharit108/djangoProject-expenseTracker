@@ -12,3 +12,14 @@ class UpdateOwnProfile(permissions.BasePermission):
 
         """if not get request, if obj.id === return user id"""
         return obj.id == request.user.id
+
+
+class UpdateOwnExpense(permissions.BasePermission):
+    """Allow users to update own expenses"""
+
+    def has_object_permission(self, request, view, obj):
+        """Check user is trying to update own expense"""
+        if request.method in permissions.SAFE_METHODS:
+            return obj.user_profile.id == request.user.id
+
+        return obj.user_profile.id == request.user.id

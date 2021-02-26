@@ -34,3 +34,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
             instance.set_password(password)
 
         return super().update(instance, validated_data)
+
+
+class ExpenseItemSerializer(serializers.ModelSerializer):
+    """Serializes expense item"""
+
+    class Meta:
+        model = models.ExpenseItem
+        fields = ('id', 'user_profile', 'expense_item', 'expense_amount', 'expense_tag', 'created_on')
+        extra_kwargs = {
+            'user_profile': {'read_only': True}
+        }
