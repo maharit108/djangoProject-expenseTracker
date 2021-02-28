@@ -56,3 +56,13 @@ class IncomeSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'user_profile': {'read_only': True}
         }
+
+
+class BudgetSerializer(serializers.ModelSerializer):
+    """Serialize Budget"""
+    class Meta:
+        model = models.Budget
+        fields = ('id', 'user_profile', 'budget_amount', 'expense_tag')
+        extra_kwargs = {
+            'user_profile': {'read_only': True}
+        }

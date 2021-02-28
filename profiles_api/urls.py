@@ -8,6 +8,7 @@ router = DefaultRouter()
 router.register('profile', views.UserProfileViewSet)
 router.register('expenses', views.ExpenseItemViewSet)
 router.register('incomes', views.IncomeViewSet)
+router.register('budget', views.BudgetViewSet)
 
 urlpatterns = [
     path('login/', views.UserLoginApiView.as_view()),

@@ -74,15 +74,23 @@ class Income(models.Model):
         return self.income_amount
 
 
+class Budget(models.Model):
+     """Budget per expense tag type"""
+     user_profile = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+     expense_tag = models.CharField(max_length=30)
+     budget_amount =  models.DecimalField(blank=True, null=True, max_digits=12, decimal_places=2, validators=[MinValueValidator(0.00)])
+     
+     def __str__(self):
+        """Return model as string"""
+        return self.expense_tag
+
+
 class ExpenseItem(models.Model):
     """Expense items"""
-    user_profile = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
+    user_profile = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     expense_item = models.CharField(max_length=255)
     expense_amount = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0.00)])
-    expense_tag = models.CharField(max_length=30)
+    expense_tag = models.ForeignKey(Budget, on_delete=models.SET_NULL, blank=True, null=True)
     date = models.DateField(blank=True, null=True)
     created_on = models.DateField(auto_now_add=True)
 

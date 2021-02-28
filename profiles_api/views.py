@@ -50,3 +50,15 @@ class IncomeViewSet(viewsets.ModelViewSet):
     def perform_create(self, Serializer):
         """Set user_profile to logged in user"""
         Serializer.save(user_profile=self.request.user)
+
+
+class BudgetViewSet(viewsets.ModelViewSet):
+    """CRUD for budget"""
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = serializers.BudgetSerializer
+    queryset = models.Budget.objects.all()
+    permission_classes = (permissions.UpdateOwnBudget, IsAuthenticated,)
+
+    def perform_create(self, Serializer):
+        """Set user_profile to logged in user"""
+        Serializer.save(user_profile=self.request.user)
