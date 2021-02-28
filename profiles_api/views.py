@@ -17,15 +17,19 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserProfileSerializer
     queryset = models.UserProfile.objects.all()
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.UpdateOwnProfile,)
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ('name', 'email',)
+    permission_classes = (permissions.UpdateOwnProfile, IsAuthenticated,)
 
+    def get_queryset(self):
+        user = self.request.user
+        return models.UserProfile.objects.filter(id=user.id)
+
+    
 
 # login view
 class UserLoginApiView(ObtainAuthToken):
     """Create User authentication token"""
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
 
 
 class ExpenseItemViewSet(viewsets.ModelViewSet):
@@ -38,6 +42,11 @@ class ExpenseItemViewSet(viewsets.ModelViewSet):
     def perform_create(self, Serializer):
         """Set user_profile to logged in user"""
         Serializer.save(user_profile=self.request.user)
+    
+    def get_queryset(self):
+        user = self.request.user
+        return models.ExpenseItem.objects.filter(user_profile=user.id)
+
 
 
 class IncomeViewSet(viewsets.ModelViewSet):
@@ -50,6 +59,11 @@ class IncomeViewSet(viewsets.ModelViewSet):
     def perform_create(self, Serializer):
         """Set user_profile to logged in user"""
         Serializer.save(user_profile=self.request.user)
+    
+    def get_queryset(self):
+        user = self.request.user
+        return models.Income.objects.filter(user_profile=user.id)
+
 
 
 class BudgetViewSet(viewsets.ModelViewSet):
@@ -62,3 +76,7 @@ class BudgetViewSet(viewsets.ModelViewSet):
     def perform_create(self, Serializer):
         """Set user_profile to logged in user"""
         Serializer.save(user_profile=self.request.user)
+    
+    def get_queryset(self):
+        user = self.request.user
+        return models.Budget.objects.filter(user_profile=user.id)

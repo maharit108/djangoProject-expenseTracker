@@ -8,7 +8,7 @@ class UpdateOwnProfile(permissions.BasePermission):
         """Check user trying to edit profile"""
         """if request method is SAFE_METHODS (get) allow"""
         if request.method in permissions.SAFE_METHODS:
-            return True
+            return obj.id == request.user.id
 
         """if not get request, if obj.id === return user id"""
         return obj.id == request.user.id
@@ -21,7 +21,7 @@ class UpdateOwnExpense(permissions.BasePermission):
         """Check user is trying to update own expense"""
         if request.method in permissions.SAFE_METHODS:
             return obj.user_profile.id == request.user.id
-
+            
         return obj.user_profile.id == request.user.id
 
 
