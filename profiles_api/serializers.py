@@ -41,7 +41,18 @@ class ExpenseItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.ExpenseItem
-        fields = ('id', 'user_profile', 'expense_item', 'expense_amount', 'expense_tag', 'created_on')
+        fields = ('id', 'user_profile', 'expense_item', 'expense_amount', 'expense_tag', 'date', 'created_on')
+        extra_kwargs = {
+            'user_profile': {'read_only': True}
+        }
+
+
+class IncomeSerializer(serializers.ModelSerializer):
+    """Serialize income"""
+
+    class Meta:
+        model = models.Income
+        fields = ('id', 'user_profile', 'income_amount', 'income_details', 'date', 'created_on')
         extra_kwargs = {
             'user_profile': {'read_only': True}
         }

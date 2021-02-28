@@ -23,3 +23,14 @@ class UpdateOwnExpense(permissions.BasePermission):
             return obj.user_profile.id == request.user.id
 
         return obj.user_profile.id == request.user.id
+
+
+class UpdateOwnIncome(permissions.BasePermission):
+    """Allow users to update own income only"""
+
+    def has_object_permission(self, request, view, obj):
+        """Check user is trying to update own income"""
+        if request.method in permissions.SAFE_METHODS:
+            return obj.user_profile.id == request.user.id
+
+        return obj.user_profile.id == request.user.id

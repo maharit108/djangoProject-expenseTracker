@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 from django.conf import settings
+from django.core.validators import MinValueValidator
 
 class UserProfileManager(BaseUserManager):
     """Manager for user profiles"""
@@ -57,6 +58,22 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
+class Income(models.Model):
+    """Income items"""
+    user_profile = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    income_amount = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0.00)])
+    income_details = models.CharField(max_length=255, blank=True)
+    date = models.DateField(blank=True, null=True)
+    created_on = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        """Return model as string"""
+        return self.income_amount
+
+
 class ExpenseItem(models.Model):
     """Expense items"""
     user_profile = models.ForeignKey(
@@ -64,9 +81,10 @@ class ExpenseItem(models.Model):
         on_delete=models.CASCADE
     )
     expense_item = models.CharField(max_length=255)
-    expense_amount = models.DecimalField(max_digits=12, decimal_places=2)
+    expense_amount = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0.00)])
     expense_tag = models.CharField(max_length=30)
-    created_on = models.DateTimeField(auto_now_add=True)
+    date = models.DateField(blank=True, null=True)
+    created_on = models.DateField(auto_now_add=True)
 
     def __str__(self):
         """Return model as string"""
