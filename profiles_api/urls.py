@@ -11,6 +11,6 @@ router.register('incomes', views.IncomeViewSet)
 router.register('budget', views.BudgetViewSet)
 
 urlpatterns = [
-    path('login/', views.UserLoginApiView.as_view()),
+    path('login/', views.Login.as_view()),
     path('', include(router.urls)),
 ]
